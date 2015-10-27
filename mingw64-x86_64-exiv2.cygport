@@ -1,9 +1,9 @@
 CROSS_HOST="x86_64-w64-mingw32"
-inherit cross
+inherit cross cmake
 
 NAME="mingw64-x86_64-exiv2"
-VERSION=0.24
-RELEASE=2
+VERSION=0.25
+RELEASE=1
 CATEGORY="Devel"
 SUMMARY="Exiv/IPTC/XMP image metadata library for Win64 toolchain"
 DESCRIPTION="Exiv2 is a C++ library and a command line utility to access
@@ -12,25 +12,20 @@ HOMEPAGE="http://www.exiv2.org/"
 SRC_URI="http://www.exiv2.org/exiv2-${VERSION}.tar.gz"
 SRC_DIR="exiv2-${VERSION}"
 PATCH_URI="
-	http://pkgs.fedoraproject.org/cgit/exiv2.git/plain/exiv2-0.24-CVE-2014-9449.patch
-	0.17.1-no-undefined.patch
-	0.24-autoconf.patch
+	0.25-find-libintl.patch
+	0.25-winsock2.patch
 "
 
-src_compile() {
-	cd ${S}
-	rm -f config/aclocal.m4
-	ln -s config/configure.ac .
-	NO_AUTOHEADER=1 cygautoreconf
-	rm configure.ac
-	lndirs
-	cd ${B}
-	cygconf --disable-visibility --with-zlib=${CROSS_PREFIX}
-	cygmake
-}
+DIFF_EXCLUDES="exv_conf.h svn_version.h"
+
+CPPFLAGS+=" -DMINGW_HAS_SECURE_API"
+CYGCMAKE_ARGS="
+	-DEXIV2_ENABLE_BUILD_PO:BOOL=OFF
+	-DEXIV2_ENABLE_BUILD_SAMPLES:BOOL=OFF
+"
 
 src_install() {
 	cd ${B}
-	cygmake -C src install-lib DESTDIR=${D}
-	cyginstall -C po
+	cyginstall
+	rm -f ${D}${CROSS_LIBDIR}/pkgconfig/*.lsm
 }
