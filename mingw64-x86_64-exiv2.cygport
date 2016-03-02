@@ -3,7 +3,7 @@ inherit cross cmake
 
 NAME="mingw64-x86_64-exiv2"
 VERSION=0.25
-RELEASE=1
+RELEASE=2
 CATEGORY="Devel"
 SUMMARY="Exiv/IPTC/XMP image metadata library for Win64 toolchain"
 DESCRIPTION="Exiv2 is a C++ library and a command line utility to access
@@ -18,7 +18,8 @@ PATCH_URI="
 
 DIFF_EXCLUDES="exv_conf.h svn_version.h"
 
-CPPFLAGS+=" -DMINGW_HAS_SECURE_API"
+# https://bugzilla.redhat.com/show_bug.cgi?id=888769
+CPPFLAGS+=" -DMINGW_HAS_SECURE_API -DBanAllEntityUsage=1"
 CYGCMAKE_ARGS="
 	-DEXIV2_ENABLE_BUILD_PO:BOOL=OFF
 	-DEXIV2_ENABLE_BUILD_SAMPLES:BOOL=OFF
