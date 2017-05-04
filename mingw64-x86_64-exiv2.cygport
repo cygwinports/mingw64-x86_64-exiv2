@@ -3,7 +3,7 @@ inherit cross cmake
 
 NAME="mingw64-x86_64-exiv2"
 VERSION=0.25
-RELEASE=2
+RELEASE=3
 CATEGORY="Devel"
 SUMMARY="Exiv/IPTC/XMP image metadata library for Win64 toolchain"
 DESCRIPTION="Exiv2 is a C++ library and a command line utility to access
